@@ -5,16 +5,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "jest": {
-    "setupFiles": [
-      "./src/testSetup.js"
-    ]
   },
   "browserslist": {
     "production": [
@@ -29,20 +23,28 @@
     ]
   },
   "dependencies": {
+    "@apollo/react-components": "^3.1.3",
+    "apollo-boost": "^0.4.4",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
     "react": "^16.11.0",
+    "react-apollo": "^3.1.3",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0"
   },
   "devDependencies": {
+    "@apollo/react-testing": "^3.1.3",
     "@types/enzyme": "^3.10.3",
     "@types/graphql": "^14.5.0",
     "@types/jest": "24.0.20",
     "@types/node": "12.11.7",
     "@types/react": "16.9.11",
     "@types/react-dom": "16.9.3",
+    "babel-jest": "^24.9.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "jest": "^24.9.0",
-    "typescript": "3.6.4"
+    "typescript": "3.6.4",
+    "wait-for-expect": "^3.0.1"
   }
 }

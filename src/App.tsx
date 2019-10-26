@@ -1,24 +1,55 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Query } from "react-apollo";
+import  gql from "graphql-tag";
+
 import './App.css';
+
+const FIND_FIRST_FIVE_PRODUCTS = gql`
+{
+  products(first:5) {
+      id,
+      name,
+      description
+  }
+}
+`;
+
+class FindProductsResponse {
+ products: Array<Product>;
+ constructor(products: Array<Product>) {
+  this.products = products;
+ }
+}
+class Product {
+  id: number;
+  name: String;
+  description: String;
+  constructor(id: number, name: String, description: String) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+  }
+}
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Query<FindProductsResponse,{}> query={FIND_FIRST_FIVE_PRODUCTS}>
+        {({loading, error, data}) => {
+          if (loading) return (<p>Loading store data...</p>);
+          if (error) return (<p>Error: ${error.message}</p>);
+          return (
+            <div id="productList" className="container">
+              {data && data.products.map( product => (
+                <div className="product" key={product.id}>
+                  <h2 className="productName">{product.name}</h2>
+                  <p>{product.description}</p>
+                </div>
+              ))}
+            </div>
+          )
+        }}
+      </Query>
     </div>
   );
 }

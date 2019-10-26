@@ -1,7 +1,8 @@
 import * as React from "react";
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import waitForExpect from "wait-for-expect";
 import  gql from "graphql-tag";
+import { act } from "react-dom/test-utils";
 
 import { MockedProvider } from "@apollo/react-testing";
 import App from './App';
@@ -51,6 +52,23 @@ describe('App component', () => {
               <App/>
             </MockedProvider>
     );
+
+    await waitForExpect(() => {
+      wrapper.update();
+      expect(wrapper.find(".productName").length).toEqual(2);
+    });
+  });
+  
+  it('renders the same way using react test utils', async () => {
+    let wrapper:ReactWrapper;
+    
+    act(() => {
+      wrapper = mount(
+        <MockedProvider mocks={[MOCKED_CLIENT]} addTypename={false} >
+          <App/>
+        </MockedProvider>
+        );
+    });
 
     await waitForExpect(() => {
       wrapper.update();

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import waitForExpect from "wait-for-expect";
 import  gql from "graphql-tag";
 import { act } from "react-dom/test-utils";
+import { wait } from "@testing-library/react";
 
 import { MockedProvider } from "@apollo/react-testing";
 import App from './App';
@@ -37,13 +37,17 @@ const MOCKED_CLIENT = {
     }
 };
 
-describe('App component', () => {
+describe('App component',  () => {
 
-  it('renders loading state', () => {
+  it('renders loading state', async () => {
     const wrapper = mount(<MockedProvider><App/></MockedProvider>);
 
-    expect(wrapper.exists()).toEqual(true);
     expect(wrapper.text()).toEqual("Loading store data...");
+    await wait(() => {
+      wrapper.update();
+      expect(wrapper.text()).toContain("Error: $Network error:");
+    });
+
   });
 
   it('renders after data retrieval', async () => {
@@ -53,10 +57,11 @@ describe('App component', () => {
             </MockedProvider>
     );
 
-    await waitForExpect(() => {
+    await wait(() => {
       wrapper.update();
       expect(wrapper.find(".productName").length).toEqual(2);
     });
+
   });
   
   it('renders the same way using react test utils', async () => {
@@ -70,7 +75,7 @@ describe('App component', () => {
         );
     });
 
-    await waitForExpect(() => {
+    await wait(() => {
       wrapper.update();
       expect(wrapper.find(".productName").length).toEqual(2);
     });
